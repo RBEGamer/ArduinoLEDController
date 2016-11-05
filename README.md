@@ -47,3 +47,5 @@ you only need the FlashStorage lib if you are using an Arduino DUE
 * you can use a api, please see the description on the webinterface
 
 
+## IMAGE OF A 32 CHANNEL SETUP
+![alt tag](https://raw.githubusercontent.com/RBEGamer/ArduinoLEDController/master/images/32channel.jpeg)
