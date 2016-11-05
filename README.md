@@ -38,6 +38,8 @@ Uses the PCA9685 PWM Controller to drive ttl mosfets. you cant add more channels
 * download the FlashStorage lib (https://github.com/sebnil/DueFlashStorage)
 * open the pc_controller.ino and edit the `#define pca_count_pcas ` to your pca amount 1-63
 * upload the sketch to the arduino
+### NOTE
+you only need the FlashStorage lib if you are using an Arduino DUE
 
 # USAGE
 * connect a ehternet cable to the ehternetshield
@@ -45,5 +47,4 @@ Uses the PCA9685 PWM Controller to drive ttl mosfets. you cant add more channels
 * now you can set the channels
 * you can use a api, please see the description on the webinterface
 
-### NOTE
-you only need the FlashStorage lib if you are using an Arduino DUE
+
