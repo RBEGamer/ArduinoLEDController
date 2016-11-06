@@ -48,4 +48,5 @@ you only need the FlashStorage lib if you are using an Arduino DUE
 
 
 ## IMAGE OF A 32 CHANNEL SETUP
+### 32 Channel controller with alu frame as heatsink
 ![alt tag](https://raw.githubusercontent.com/RBEGamer/ArduinoLEDController/master/images/32channel.jpeg)
