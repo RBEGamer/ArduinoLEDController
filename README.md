@@ -25,10 +25,10 @@ The listed parts are for 32 seperate channels, but you can add up to 64*16 chann
 
 # SETUP HARDWARE
 * put the ethernet shield on top of the arduino headers
-* connect the lcs display to the I2C Bus of the arduino (and `VCC`, `GROUND)
+* connect the lcs display to the I2C Bus of the arduino (and `VCC`, `GROUND`)
 * connect all PCA9685 Boards to the I2C Bus of the Arduino (and `VCC`, `GROUND`)
 * connect each resistor from a channel output to `VCC of each channel of the PCA Boards
-* connect each channel of the PCA-Boars to the `Base of MOSFET
+* connect each channel of the PCA-Boars to the `Base` of MOSFET
 * connect the source pin of each MOSFET to `GND`
 * connect the drain pin of each MOSFET to a luster terminal
 * connect the input of relais to pin D2 of the arduino (you can change it with `PIN_CONFIG_LED_RELAIS 2`)
