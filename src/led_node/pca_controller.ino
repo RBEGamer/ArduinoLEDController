@@ -21,6 +21,7 @@
 #define pca_max_channel_sum (pca_channel_count*pca_count_pcas*pca_pwm_user_steps)
 #define pca_channel_start_index 0
 #define pca_channel_end_index (pca_max_channel_sum-1)
+#define EEPROM_LED_VALS_START_ADDR 0
 PCA9685* drivers[pca_count_pcas];
 
 unsigned int drivers_value_set[pca_allchip_channel_count];
@@ -31,7 +32,7 @@ int led_relais_state = 0;
 void setup_pcas(){
 
 pinMode(PIN_CONFIG_LED_RELAIS, OUTPUT);
-  
+
 channel_value_sum = 0;
 
 
@@ -53,11 +54,11 @@ drivers_value_curr[i] = 0;
  int pca_offset = i / pca_channel_count;
     int channel_offset = i % pca_channel_count;
   drivers[pca_offset]->getPin(channel_offset).setValueAndWrite(0);
-    
+
  }
 disable_led_relais();
-
-
+//load old vals form eeprom
+restore_values();
 
 }
 
@@ -79,7 +80,7 @@ if(timeElapsed_pca > pca_fade_time_timetick){
      if(  drivers_value_curr[i] != drivers_value_set[i]){
       int ect_times = pca_fade_corretion_execute;
       ect_times = drivers_value_set[i] -  drivers_value_curr[i];
-      
+
 if(ect_times < 0){
   ect_times = -ect_times;
   }
@@ -123,6 +124,12 @@ void set_all_value(int _value){
     }
 }
 
+void restore_values(){
+  for(int i = 0; i < pca_allchip_channel_count; i++){
+  pca_set_value(i,EEPROM.read(i+EEPROM_LED_VALS_START_ADDR));
+  }
+
+}
 
 
 void enable_led_relais(){
@@ -135,7 +142,7 @@ void enable_led_relais(){
 }
 
 void disable_led_relais(){
-   #ifdef PIN_CONFIG_LED_RELAIS_INVERT 
+   #ifdef PIN_CONFIG_LED_RELAIS_INVERT
   digitalWrite(PIN_CONFIG_LED_RELAIS, LOW);
   #else
   digitalWrite(PIN_CONFIG_LED_RELAIS, HIGH);
@@ -169,22 +176,23 @@ void pca_set_value(unsigned int _channel, int _value){
       }
 
       if(_value < 0){_value = 0;}
+ EEPROM.write(EEPROM_LED_VALS_START_ADDR +_channel, _value);
 
-drivers_value_set[_channel] = _value * pca_pwm_multiplier;      
+drivers_value_set[_channel] = _value * pca_pwm_multiplier;
 #ifdef pca_enable_fade
      #else
      int pca_offset = _channel / pca_channel_count;
       int channel_offset = _channel % pca_channel_count;
       drivers_value_curr[_channel] = drivers_value_set[_channel];
      drivers[pca_offset]->getPin(channel_offset).setValueAndWrite(drivers_value_set[_channel]);
-     #endif 
+     #endif
 
 
-     
+
 
 
     check_led_relais_state();
-      
+
   }
 
 
@@ -200,19 +208,19 @@ drivers_value_set[_channel] = _value * pca_pwm_multiplier;
 
       if(_value < 0){_value = 0;}
 
-drivers_value_curr[_channel] = _value * pca_pwm_multiplier;      
+drivers_value_curr[_channel] = _value * pca_pwm_multiplier;
 #ifdef pca_enable_fade
      #else
      int pca_offset = _channel / pca_channel_count;
       int channel_offset = _channel % pca_channel_count;
      // drivers_value_curr[_channel] = drivers_value_set[_channel];
      drivers[pca_offset]->getPin(channel_offset).setValueAndWrite(drivers_value_curr[_channel]);
-     #endif 
+     #endif
 
 
-     
+
 
 
     check_led_relais_state();
-      
+
   }

@@ -27,7 +27,7 @@ FLASH STORAGE : https://github.com/sebnil/DueFlashStorage
  #endif
 #include <PCA9685.h>
 
-
+#include <EEPROM.h>
 // PCWheelPosA9685 with default settings
 
 
@@ -47,7 +47,7 @@ void setup()
 
 
 
-setup_pcas(); 
+setup_pcas();
 
 i2c_display_setup();
 
