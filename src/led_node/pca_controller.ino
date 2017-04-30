@@ -22,6 +22,7 @@
 #define pca_channel_start_index 0
 #define pca_channel_end_index (pca_max_channel_sum-1)
 #define EEPROM_LED_VALS_START_ADDR 0
+#define pca_user_type int
 PCA9685* drivers[pca_count_pcas];
 
 unsigned int drivers_value_set[pca_allchip_channel_count];
@@ -126,7 +127,9 @@ void set_all_value(int _value){
 
 void restore_values(){
   for(int i = 0; i < pca_allchip_channel_count; i++){
-  pca_set_value(i,EEPROM.read(i+EEPROM_LED_VALS_START_ADDR));
+     pca_user_type tmp =  0;
+     EEPROM.get((i+EEPROM_LED_VALS_START_ADDR)) * sizeof(pca_user_type), tmp);
+     pca_set_value(i,tmp);
   }
 
 }
@@ -167,7 +170,7 @@ void check_led_relais_state(){
       }
   }
 
-void pca_set_value(unsigned int _channel, int _value){
+void pca_set_value(unsigned int _channel, pca_user_type _value){
   if(_channel > pca_allchip_channel_count){
     return;
     }
@@ -176,7 +179,7 @@ void pca_set_value(unsigned int _channel, int _value){
       }
 
       if(_value < 0){_value = 0;}
- EEPROM.write(EEPROM_LED_VALS_START_ADDR +_channel, _value);
+      EEPROM.put((EEPROM_LED_VALS_START_ADDR +_channel) * sizeof(pca_user_type), _value);
 
 drivers_value_set[_channel] = _value * pca_pwm_multiplier;
 #ifdef pca_enable_fade
